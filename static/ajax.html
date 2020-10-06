@@ -13,19 +13,19 @@ $(document).ready(function(){
     
   $("button").click(function(){
     var showData = $('#show-data');
-    $.getJSON('teste.json', function (data) {
+    $.getJSON('teste.json', function (data) { // Ler JSON do arquivo teste.json
       console.log(data);
 
-      showData.empty();
-
+      showData.empty(); // Retirar o que tem na div
+      
+      // Colocar numa lista o conteudo do JSON
       showData.append('<ul>')
       $.each(data, function(i, field){
         showData.append('<li>' + i + ': ' + field + '</li>');
       });
-
       showData.append('</ul>')
 
-      if(data){
+      if(data){ // Se nao houver erro na leitura, esconder o botao
         $("button").hide();
       }
     }
