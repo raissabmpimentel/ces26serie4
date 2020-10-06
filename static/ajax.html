@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <h1>CES-26 - 4ª Série de Exercícios</h1>
+    <h2>Aluna: Raíssa Batista de Miranda Pimentel - Turma: COMP-21</h2>
+    <h3>Atividade 4 - Uso de AJAX</h3>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+$(document).ready(function(){
+    
+  $("button").click(function(){
+    var showData = $('#show-data');
+    $.getJSON('teste.json', function (data) {
+      console.log(data);
+
+      showData.empty();
+
+      showData.append('<ul>')
+      $.each(data, function(i, field){
+        showData.append('<li>' + i + ': ' + field + '</li>');
+      });
+
+      showData.append('</ul>')
+
+      if(data){
+        $("button").hide();
+      }
+    }
+    );
+  });
+    
+});
+</script>
+</head>
+<body>
+
+<button>Acessar JSON</button>
+
+<div id="show-data">
+    <p>Esse parágrafo irá sumir quando o botão for clicado</p>
+</div>
+
+</body>
+</html>

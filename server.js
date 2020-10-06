@@ -1,12 +1,14 @@
 var express = require('express');
 var app = express();
-app.use(express.static('static'));
+app.use(express.static('static')); // Permitir acesso a arquivos de static
 
+// Definir multer para upload de arquivos
+// Baseado em http://cangaceirojavascript.com.br/express-realizando-upload-multer/
 var multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, __dirname + '/upload/')
+        cb(null, __dirname + '/uploads/')
     },
     filename: function (req, file, cb) {
         cb(null, `${Date.now()}-${file.originalname}`);
@@ -27,6 +29,10 @@ app.get('/upload', function (req,res) {
     res.sendFile(__dirname + "/static/" +"upload.html"); 
 });
 
+app.get('/ajax', function (req,res) {
+    res.sendFile(__dirname + "/static/" +"ajax.html"); 
+});
+
 app.get('/form_get', function(req, res)
 {
     var response = {
@@ -38,7 +44,8 @@ app.get('/form_get', function(req, res)
     res.end(JSON.stringify(response));
 })
 
- app.post('/file_upload', upload.single('file'), function (req, res) {
+// Baseado em http://cangaceirojavascript.com.br/express-realizando-upload-multer/
+app.post('/file_upload', upload.single('file'), function (req, res) {
     console.log(req.file.originalname);
     console.log(req.file.path);
     console.log(req.file.mimetype);
@@ -55,5 +62,5 @@ app.get('/form_get', function(req, res)
 
 var server = app.listen (8081, function () {
 var port = server.address().port;
-console.log("Example app listening at http://127.0.0.1:%s", port );
+console.log("App escutando em http://127.0.0.1:%s", port);
 });
