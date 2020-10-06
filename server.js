@@ -2,12 +2,18 @@ var express = require('express');
 var app = express();
 app.use(express.static('static'));
 
-var bodyParser = require('body-parser');
 var multer = require('multer');
-var fs = require("fs");
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(multer({ dest: __dirname + '/tmp/'}).single('file'));
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, __dirname + '/upload/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+
+const upload = multer({ storage });
 
 app.get('/', function (req,res) {
     res.sendFile(__dirname + "/static/" +"index.html"); 
@@ -32,29 +38,20 @@ app.get('/form_get', function(req, res)
     res.end(JSON.stringify(response));
 })
 
-app.post('/file_upload', function (req, res) {
+ app.post('/file_upload', upload.single('file'), function (req, res) {
     console.log(req.file.originalname);
     console.log(req.file.path);
     console.log(req.file.mimetype);
-    var file = __dirname + "/upload/" + req.file.originalname;
-    
-    fs.readFile(req.file.path, function (err, data) {
-       fs.writeFile(file, data, function (err) {
-          if(err) {
-             console.log(err);
-             } else {
-                var response = {
-                   message:'Arquivo salvo com sucesso',
-                   filename:req.file.originalname,
-                   filepath:file
-                };
-             }
+
+    var response = {
+        message:'Arquivo salvo com sucesso',
+        filename:req.file.originalname,
+        filepath:req.file.path
+    };
           
-          console.log(response);
-          res.end(JSON.stringify(response));
-       });
-    });
- })
+    console.log(response);
+    res.end(JSON.stringify(response));
+});  
 
 var server = app.listen (8081, function () {
 var port = server.address().port;
