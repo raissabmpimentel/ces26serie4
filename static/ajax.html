@@ -13,7 +13,7 @@ $(document).ready(function(){
     
   $("button").click(function(){
     var showData = $('#show-data');
-    $.getJSON('teste.json', function (data) { // Ler JSON do arquivo teste.json
+    $.getJSON('dados.json', function (data) { // Ler JSON do arquivo teste.json
       console.log(data);
 
       showData.empty(); // Retirar o que tem na div

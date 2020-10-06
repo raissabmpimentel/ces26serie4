@@ -47,7 +47,7 @@ app.get('/form_get', function(req, res)
     res.end(JSON.stringify(response));
 })
 
-// Fazer upload propriamente dito do arquivo via POST, retornando um JSON com o nome do arquivo, seu caminho e tipo
+// Fazer upload propriamente dito do arquivo via POST, retornando um JSON com uma mensagem, o nome do arquivo, seu caminho e tipo
 // Baseado em http://cangaceirojavascript.com.br/express-realizando-upload-multer/
 app.post('/file_upload', upload.single('file'), function (req, res) {
 
